@@ -1,2 +1,2 @@
-# Hutao.Bot
+# Hu Tao
 Hu Tao, the Discord bot.
