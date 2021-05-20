@@ -13,7 +13,7 @@
             ],
             "program": "${workspaceFolder}/src/ts/main.ts",
             "outFiles": [
-                "${workspaceFolder}/src/js/*.js"
+                "${workspaceFolder}/src/js/**/*.js"
             ],
             "cwd": "${workspaceFolder}/src"
         }
