@@ -1,7 +1,7 @@
 import HBot from "./HBot";
 
 
-class Module {
+export default class Module {
 
     hbot: HBot;
     commandName: string;
@@ -15,7 +15,7 @@ class Module {
         // this.log("method processInteraction() not implemented, skipping");
     }
 
-    processCommand() {
+    processCommand(msg: any, args: string[]) {
         // this.log("method processCommand() not implemented, skipping");
     }
 
@@ -29,4 +29,3 @@ class Module {
 
 }
 
-module.exports = Module;
