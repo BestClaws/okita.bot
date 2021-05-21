@@ -1,0 +1,9 @@
+# rename this file to listings.yml before deploying.
+# list character names and their image files here
+# duplicates allowed
+# image files should be placed in the same directory.
+# examples:
+# - name: character name 1
+#   filename: file-name-1.png
+# - name: character name 2
+#   filename: file-name-2.jpg
