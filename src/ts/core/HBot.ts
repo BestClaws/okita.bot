@@ -17,10 +17,6 @@ export default class HBot {
 
     }
 
-    /**
-     * configure the bot using the bot config file
-     * @param {string} configFile 
-     */
     configure(configFile: string) {
         this.botConfig = yaml.load(configFile);
     }

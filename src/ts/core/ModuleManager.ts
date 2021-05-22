@@ -18,10 +18,20 @@ export default class ModuleManager {
 
     loadModules() {
         // runtime code, deals with js files, no ts present.
-        const moduleFiles = fs.readdirSync("./js/modules")
-            .filter((file: string) => file.endsWith(".js"));
         
+        // look for modules as files
+        let moduleFiles = fs.readdirSync("./js/modules")
+            .filter((file: string) => file.endsWith(".js"));
+ 
+
+        // look for modules as folders
+        let moreModuleFiles = fs.readdirSync("./js/modules", { withFileTypes: true })
+        .filter(dir => dir.isDirectory())
+        .map(dir => dir.name + "/" + "main" + ".js");
+        
+        moduleFiles = moduleFiles.concat(moreModuleFiles);
         console.log("found modules: ", moduleFiles);
+
 
         for (const file of moduleFiles) {
             console.log("loading module: " + file);
