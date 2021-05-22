@@ -54,12 +54,16 @@ export default class Puzzle extends Module {
 
             // confirm a puzzle is running first.
             if(puzzleData == null) {
-                msg.channel.send("no puzzle started. type 'puzzle n' for a new puzzle.");
+                msg.channel.send("No puzzle started.\nType '.puzzle n' for a new puzzle.");
                 return;
             }
 
             if(puzzleData.trials >= 5) {
-                msg.channel.send("game over! you lose. '.puzzle n' for new puzzle");
+                msg.channel.send(
+                    `game over! you lose.\nThe answer was: ${puzzleData.character}`,
+                    { files: [puzzleData.background.src] }
+                );
+                puzzleData = null;
         
             } else {
                 puzzleData.trials++;
@@ -68,9 +72,14 @@ export default class Puzzle extends Module {
                 puzzleData.board.removeRandom();
                 puzzleData.board.draw();
         
-                const attachment = new Discord.MessageAttachment(this.canvas.toBuffer(), 'welcome-image.png');
-                await msg.channel.send(attachment);
+                const attachment = new Discord.MessageAttachment(
+                    this.canvas.toBuffer(),
+                    "puzzle-image.png"
+                );
+                
                 msg.channel.send(`${5 - puzzleData.trials} retries remain.`);
+                msg.channel.send(attachment);
+               
             }
 
             this.puzzles[msg.guild!.id] = puzzleData;
@@ -88,6 +97,7 @@ export default class Puzzle extends Module {
             let answer = msg.content.slice(8);
             if(puzzleData.fuse.search(answer).length > 0) {
                 msg.channel.send('you win! type ".puzzle n" for new puzzle');
+                this.puzzles[msg.guild!.id] = null;
             } else {
                 msg.channel.send(`wrong answer. ${5 - puzzleData.trials} retries remaining.\n try ".puzzle r" to reveal more`);
             }
@@ -142,11 +152,3 @@ export default class Puzzle extends Module {
 
 
 }
-
-
-
-
-
-
-
-
