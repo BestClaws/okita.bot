@@ -8,7 +8,7 @@ import HBot from '../../core/HBot';
 import Module from "../../core/Module";
 import PuzzleBoard from './PuzzleBoard';
 
-import { Points } from '../../db/dbObjects';
+import { Points } from "../../db/dbObjects";
 
 
 
@@ -34,6 +34,7 @@ export default class Puzzle extends Module {
 
         this.canvas = Canvas.createCanvas(300, 375);
         this.ctx = this.canvas.getContext('2d');
+
 
 
     }
