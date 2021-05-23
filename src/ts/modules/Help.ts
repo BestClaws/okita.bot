@@ -16,7 +16,7 @@ export default class Help extends Module {
         embed.setColor('#ff9959');
         embed.setTitle('Anime Puzzle Commands');
         embed.addField('.puzzle n', 'show a new puzzle.')
-        embed.addField('.puzzle r', 'reveal a random tile in puzlze.');
+        embed.addField('.puzzle r', 'reveal a random tile in puzzle.');
         embed.addField('.puzzle <answer>', 'answer your guess (typos allowed)');
         msg.channel.send(embed);
     }
