@@ -1,3 +1,4 @@
 node_modules/
 src/js/
 bot-config.yml
+database.sqlite

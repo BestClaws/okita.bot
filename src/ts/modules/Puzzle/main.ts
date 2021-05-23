@@ -8,6 +8,8 @@ import HBot from '../../core/HBot';
 import Module from "../../core/Module";
 import PuzzleBoard from './PuzzleBoard';
 
+import { Points } from '../../db/dbObjects';
+
 
 
 
@@ -18,9 +20,9 @@ export default class Puzzle extends Module {
     canvas: any;
     puzzleList: any;
     fuse: any;
+    points: any;
 
     puzzles: any;
-
 
     
     constructor(hbot: HBot) {
@@ -28,6 +30,7 @@ export default class Puzzle extends Module {
         
         this.puzzleList  = yaml.load("./assets/puzzle/listings.yml");
         this.puzzles = [];
+        this.points = [];
 
         this.canvas = Canvas.createCanvas(300, 375);
         this.ctx = this.canvas.getContext('2d');
@@ -40,6 +43,7 @@ export default class Puzzle extends Module {
 
         let subcmd = args[0].toLowerCase();
     
+        // careful! possible undefined value is treated as null.
         let puzzleData = this.puzzles[msg.guild!.id];
 
 
@@ -87,6 +91,19 @@ export default class Puzzle extends Module {
             break;
 
         default:
+            // user(s) give answer.
+
+            if(!this.points[msg.author.id]) { // cache user points record if not cached.
+                let record = await Points.findOne({where: {user_id: msg.author.id}});
+                if(record) { // user points record exists in db. cache it.
+                    // cache record.
+                    this.points[msg.author.id] = record.points;
+
+                } else {  // no record exists in db create a new record and cache it.
+                    await Points.create({user_id: msg.author.id, points: 0});
+                    this.points[msg.author.id] = 0;
+                }
+            }
 
             // confirm a puzzle is running first.
             if(puzzleData == null) {
@@ -96,8 +113,31 @@ export default class Puzzle extends Module {
 
             let answer = msg.content.slice(8);
             if(puzzleData.fuse.search(answer).length > 0) {
-                msg.channel.send('you win! type ".puzzle n" for new puzzle');
+                // right answer!
+
+                let pointsWon = Math.pow((5 - puzzleData.trials), 2);
+                let currentPoints = this.points[msg.author.id];
+                let updatedPoints = currentPoints + pointsWon;
+                this.points[msg.author.id] = updatedPoints;
+
                 this.puzzles[msg.guild!.id] = null;
+                
+                msg.channel.send(
+                    `you win!  +${pointsWon} points (total: ${this.points[msg.author.id]})\n` + 
+                    `type ".puzzle n" for new puzzle`
+                );
+
+                // update db
+                const affectedRows = await Points.update(
+                    { points: updatedPoints },
+                    { where: { user_id: msg.author.id } }
+                );
+                // if (affectedRows > 0) {
+                // 	console.log("record updated");
+                // }
+
+                
+
             } else {
                 msg.channel.send(`wrong answer. ${5 - puzzleData.trials} retries remaining.\n try ".puzzle r" to reveal more`);
             }
