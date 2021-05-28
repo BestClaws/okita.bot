@@ -1,5 +1,13 @@
-node_modules/
-src/js/
+# auto gen files.
+/node_modules/
+/src/js/
+
+# bot secrets.
 bot-config.yml
-database.sqlite
-data/
+
+# user generated. data.
+/database.sqlite
+/data/
+
+# others
+/scripts/
