@@ -8,7 +8,7 @@ import HBot from '../../core/HBot';
 import Module from "../../core/Module";
 import PuzzleBoard from './PuzzleBoard';
 
-import { Points } from "../../db/dbObjects";
+import { Points } from "../../db/db-objects";
 
 
 
