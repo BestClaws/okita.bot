@@ -8,3 +8,4 @@ const sequelize = new Sequelize("database", "username", "password", {
 });
 
 export const Points = require("./models/Points")(sequelize, DataTypes);
+export const UserCommands = require("./models/UserCommands")(sequelize, DataTypes);
