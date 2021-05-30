@@ -12,6 +12,7 @@ export default class HBot {
     moduleManager: ModuleManager = new ModuleManager(this);
 
 
+
     constructor() {
 
 
@@ -25,10 +26,12 @@ export default class HBot {
     start() {
         this.dClient.on("ready", () => {
             
-            // Set the client user's activity
-            if(this.dClient.user) this.dClient.user.setActivity(".help", { type: "LISTENING" })
-                .then(presence => console.log(`Activity set to ${presence.activities[0].name}`))
-                .catch(console.error);
+            // Set the client user's activity [listening to *help]
+            let activity_msg = this.botConfig.defaultPrefix + "help";
+            this.dClient.user!.setActivity(activity_msg, { type: "LISTENING" })
+                .then(presence => 
+                    console.log(`Activity set to ${presence.activities[0].name}`)
+                ).catch(console.error);
 
             this.moduleManager.start();
         });

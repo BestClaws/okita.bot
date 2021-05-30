@@ -48,12 +48,14 @@ export default class ModuleManager {
 
     setupModules() {
 
+        //TODO: add middleware (for guilds etc., - example configure prefix)
+
         // setup raw message processing.
         this.hbot.dClient.on("message", (msg)  => {
 
             // look for commands in message
             if(msg.author.bot == true) return;
-            if(msg.content.startsWith(".")) {
+            if(msg.content.startsWith(this.hbot.botConfig.defaultPrefix)) {
 
                 let args = msg.content.trim().slice(1).split(/ +/);
                 let commandName = args.shift();
