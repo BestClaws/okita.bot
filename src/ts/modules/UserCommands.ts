@@ -115,8 +115,17 @@ export default class UserCommands extends Module {
                 }
             });
 
-            if(record)
-                msg.channel.send(record.command_value);
+            if(record) {
+                // see if command value is remote file, send it as attachment.
+                // needs improvement.            
+                if(record.command_value.startsWith("http"))
+                    msg.channel.send({
+                        files:[record.command_value]
+                    });
+                else
+                    msg.channel.send(record.command_value);
+                
+            }                
             else
                 return;
 
