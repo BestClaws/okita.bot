@@ -1,11 +1,13 @@
 import Discord from "discord.js";
+import HBot from "../core/HBot";
+import Module from "../core/Module";
 
-export default class Ping {
+export default class Ping extends Module {
 
     commandName = "ping";
 
-    constructor() {
-
+    constructor(hbot: HBot) {
+        super(hbot);
     }
 
     processCommand(msg: Discord.Message) {
