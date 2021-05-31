@@ -25,7 +25,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses:  actions/setup-node@v1
-      - uses: actions/action-yarn@lateset
         with:
           node-version: '14.x'
           
@@ -35,10 +34,14 @@ jobs:
           echo $GITHUB_WORKSPACE
           pwd
           ls
-      
+
+      - name: Install yarn
+        run: |
+          npm install yarn
+          
       - name: Install dependencies
         run: |
-          yarn install
+          npx yarn install
           
       - name: tsc compile
         run: |
