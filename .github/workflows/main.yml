@@ -28,12 +28,7 @@ jobs:
         with:
           node-version: '14.x'
       
-    
-      - name: Check Location (learn)
-        run: |
-          echo $GITHUB_WORKSPACE
-          pwd
-          ls
+
 
       - name: Install yarn
         run: |
