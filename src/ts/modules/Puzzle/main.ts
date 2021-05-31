@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import Discord from 'discord.js';
 import Canvas from 'canvas';
 import Fuse from 'fuse.js';
@@ -13,22 +15,36 @@ import { Points } from "../../db/db-objects";
 
 
 
+
 export default class Puzzle extends Module {
 
     commandName = "puzzle";
+    
+
+    assetRequirements =  [
+        "./assets/Puzzle/listings.yml"
+    ]
+
     ctx: any;
     canvas: any;
     puzzleList: any;
     fuse: any;
     points: any;
-
     puzzles: any;
 
     
     constructor(hbot: HBot) {
         super(hbot);
+
+        // check asset requirements.
+        for(let asset of this.assetRequirements) {
+            if(!fs.existsSync(asset)) {
+                this.enabled = false
+                return;
+            } 
+        }
         
-        this.puzzleList  = yaml.load("./assets/puzzle/listings.yml");
+        this.puzzleList  = yaml.load("./assets/Puzzle/listings.yml");
         this.puzzles = [];
         this.points = [];
 
@@ -163,7 +179,7 @@ export default class Puzzle extends Module {
         let fuse = new Fuse(fuse_list, fuse_options);
 
 
-        const background = await Canvas.loadImage(`./assets/puzzle/${puzzleItem.filename}`);
+        const background = await Canvas.loadImage(`./assets/Puzzle/${puzzleItem.filename}`);
         let board = new PuzzleBoard(5, 4, 75, this.ctx);
         
 
