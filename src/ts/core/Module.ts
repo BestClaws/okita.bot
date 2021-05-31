@@ -5,11 +5,11 @@ import { Message } from "discord.js";
 export default class Module {
 
     hbot: HBot;
-    commandName: string;
+    commandName = "moduleName [gets overriden]";
+    enabled = true;
 
     constructor(hbot: HBot) {
         this.hbot = hbot;
-        this.commandName = "moduleName [gets overriden]";
     }
 
     // processInteraction() {

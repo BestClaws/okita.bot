@@ -39,8 +39,11 @@ export default class ModuleManager {
             // hence, access them via .default property when using require() 
             let moduleClass = require(`../modules/${file}`).default;
             let module = new moduleClass(this.hbot);
-            console.log("Done.");
-            this.hbot.modules.push(module);
+            if(module.enabled == true) {
+                this.hbot.modules.push(module);
+                console.log("done");
+            } else
+                console.log("assets requirements not met, skipping...")
         }
 
     }
