@@ -173,8 +173,19 @@ export default class Puzzle extends Module {
         let irandom = Math.round(Math.random() * (this.puzzleList.length - 1))
         let puzzleItem = this.puzzleList[irandom];
 
+        // find an optimal minmatchlength for fuse.js fuzzy match.
+        let smallest_word = puzzleItem.name
+            .split(" ")
+            .map((v: any) => v.length);
+        let minMatchCharLength = Math.min(...smallest_word) - 1;
 
-        let fuse_options = {keys: ["name"]}
+        console.log("puzzle answer: " + puzzleItem.name, ", min: ", minMatchCharLength);
+        
+
+        let fuse_options = {
+            keys: ["name"],
+            minMatchCharLength,
+        }
         let fuse_list = [{"name": puzzleItem.name}]
         let fuse = new Fuse(fuse_list, fuse_options);
 
