@@ -118,7 +118,12 @@ export default class UserCommands extends Module {
             if(record) {
                 // see if command value is remote file, send it as attachment.
                 // needs improvement.            
-                if(record.command_value.startsWith("http"))
+                if(
+                    record.command_value.startsWith("http") &&
+                    !record.command_value.startsWith("https://tenor.com") &&
+                    !record.command_value.startsWith("https://imgur.com") &&
+                    !record.command_value.startsWith("https://gyfcat.com")
+                )
                     msg.channel.send({
                         files:[record.command_value]
                     });
