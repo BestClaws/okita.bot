@@ -10,6 +10,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
 require("./models/Points")(sequelize, DataTypes);
 require("./models/UserCommands")(sequelize, DataTypes);
+require("./models/Say")(sequelize, DataTypes);
 
 // cli args
 const force = process.argv.includes("--force");
