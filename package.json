@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Hu Tao Discord Bot ",
   "main": "main.js",
+  "scripts": {
+    "update-db": "cd src && node js/db/db-init.js",
+    "reset-db": "cd src && node js/db/db-init.js --force"
+  },
   "repository": "https://github.com/bobyclaws/hutao.bot",
   "author": "Boby",
   "license": "MIT",
