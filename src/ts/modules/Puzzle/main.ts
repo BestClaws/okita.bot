@@ -10,7 +10,6 @@ import HBot from '../../core/HBot';
 import Module from "../../core/Module";
 import PuzzleBoard from './PuzzleBoard';
 
-import { Points } from "../../db/db-objects";
 
 
 
@@ -110,14 +109,24 @@ export default class Puzzle extends Module {
         default:
             // user(s) give answer.
 
-            if(!this.points[msg.author.id]) { // cache user points record if not cached.
-                let record = await Points.findOne({where: {user_id: msg.author.id}});
-                if(record) { // user points record exists in db. cache it.
-                    // cache record.
+            if(!this.points[msg.author.id]) {
+                // cache user points record if not cached.
+                let record = await this.hbot.db.Points.findOne({
+                    where: {user_id: msg.author.id}
+                });
+
+                if(record) {
+                    // user points record exists in db; cache it.
                     this.points[msg.author.id] = record.points;
 
-                } else {  // no record exists in db create a new record and cache it.
-                    await Points.create({user_id: msg.author.id, points: 0});
+                } else {  
+                    // no record exists in db;
+                    // create a new record and cache it.
+                    await this.hbot.db.Points.create({
+                        user_id: msg.author.id,
+                        points: 0
+                    });
+
                     this.points[msg.author.id] = 0;
                 }
             }
@@ -132,11 +141,13 @@ export default class Puzzle extends Module {
             if(puzzleData.fuse.search(answer).length > 0) {
                 // right answer!
 
+                // points = (trials-left)^2
                 let pointsWon = Math.pow((5 - puzzleData.trials), 2);
                 let currentPoints = this.points[msg.author.id];
                 let updatedPoints = currentPoints + pointsWon;
                 this.points[msg.author.id] = updatedPoints;
-
+                
+                // drop puzzle.
                 this.puzzles[msg.guild!.id] = null;
                 
                 msg.channel.send(
@@ -145,9 +156,9 @@ export default class Puzzle extends Module {
                 );
 
                 // update db
-                const affectedRows = await Points.update(
+                const affectedRows = await this.hbot.db.Points.update(
                     { points: updatedPoints },
-                    { where: { user_id: msg.author.id } }
+                    { where: { user_id: msg.author.id }}
                 );
                 // if (affectedRows > 0) {
                 // 	console.log("record updated");
@@ -156,7 +167,10 @@ export default class Puzzle extends Module {
                 
 
             } else {
-                msg.channel.send(`wrong answer. ${5 - puzzleData.trials} retries remaining.\n try ".puzzle r" to reveal more`);
+                let reply = `wrong answer.
+                    ${5 - puzzleData.trials} retries remaining.\n
+                    try ".puzzle r" to reveal more`;
+                msg.channel.send(reply);
             }
         }
 

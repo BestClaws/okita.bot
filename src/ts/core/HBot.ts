@@ -1,22 +1,21 @@
 import Discord from "discord.js";
 import * as yaml from "../util/yaml";
 import ModuleManager from "./ModuleManager";
-
+import * as dbObjects from "../db/db-objects";
 
 
 export default class HBot {
+    
     botConfig: any = {};
+    db = dbObjects;
     dClient: Discord.Client = new Discord.Client();
     modules: any = [];
     services: any = [];
     moduleManager: ModuleManager = new ModuleManager(this);
+    
 
 
-
-    constructor() {
-
-
-    }
+    constructor() {}
 
     configure(configFile: string) {
         this.botConfig = yaml.load(configFile);

@@ -1,7 +1,6 @@
 import { Message, MessageEmbed } from "discord.js";
 import HBot from "../core/HBot";
 import Module from "../core/Module";
-import * as db from "../db/db-objects"; // this wpuld be better off as hbot member.
 
 export default class Say extends Module {
 
@@ -16,11 +15,9 @@ export default class Say extends Module {
         let subcmd = args[0];
         let reply = "";
 
-        switch(subcmd) {
-        case "-logs":
-
+        if (subcmd == "-logs") {
             // fetch 5 log entries.
-            let logs = await db.Say.findAll({
+            let logs = await this.hbot.db.Say.findAll({
                 attributes: ["requested_by", "message"],
                 limit: 5,
                 order: [['createdAt', 'DESC']]
@@ -33,25 +30,26 @@ export default class Say extends Module {
                 reply += "<@" + log.requested_by + ">  *" + log.message.trim() + "*\n\n";
             
             let embed = new MessageEmbed();
-            embed.setColor("#dd2e44");
+            embed.setColor("#eca861");
             embed.setDescription(reply);            
             msg.channel.send(embed);
+            return;
 
-            break;
-
-        default:
-            msg.delete({ timeout: 0 });
-            reply = "";
-            for(let arg of args) reply += arg + " ";
-            msg.channel.send(reply);
-            this.recordLog(msg.author.id, reply);
         }
+        
+
+        msg.delete({ timeout: 0 });
+        reply = args.join(" ");
+        if(reply == "") return;
+        msg.channel.send(reply);
+        this.recordLog(msg.author.id, reply);
+        
       
     }
 
 
     async recordLog(username: string, message: string) {
-        await db.Say.create({
+        await this.hbot.db.Say.create({
             requested_by: username,
             message: message,
         });
