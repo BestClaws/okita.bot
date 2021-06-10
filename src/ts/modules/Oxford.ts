@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from "discord.js";
-import HBot from "../core/HBot";
+import XBot from "../core/XBot";
 import Module from "../core/Module";
 import fetch from "node-fetch";
 
@@ -7,8 +7,8 @@ export default class Oxford extends Module {
 
     commandName = "ox";
 
-    constructor(hbot: HBot) {
-        super(hbot);
+    constructor(xbot: XBot) {
+        super(xbot);
     }
 
     async processCommand(msg: Message, args: string[]) {

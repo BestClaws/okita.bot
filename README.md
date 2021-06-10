@@ -1,5 +1,5 @@
-# Hu Tao
-Hu Tao, the Discord bot.
+# Xiangling
+Xiangling, the Discord bot.
 
 ## current unique features:
 1. Anime Puzzle Game (guess character as it gets revealed incrementally.)

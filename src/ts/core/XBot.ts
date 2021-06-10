@@ -4,7 +4,7 @@ import ModuleManager from "./ModuleManager";
 import * as dbObjects from "../db/db-objects";
 
 
-export default class HBot {
+export default class XBot {
     
     botConfig: any = {};
     db = dbObjects;

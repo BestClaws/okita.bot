@@ -1,17 +1,17 @@
 // TODO: command processor would be good?
-// TODO: create typings (for HBot, in this case)
+// TODO: create typings (for XBot, in this case)
 
 import fs from "fs";
 
-import HBot from "./HBot";
+import XBot from "./XBot";
 
 
 export default class ModuleManager {
 
-    hbot: HBot;
+    xbot: XBot;
 
-    constructor(hbot: HBot) {
-        this.hbot = hbot
+    constructor(xbot: XBot) {
+        this.xbot = xbot
     
     }
 
@@ -38,9 +38,9 @@ export default class ModuleManager {
             // modules are written in es6 ( with export default)
             // hence, access them via .default property when using require() 
             let moduleClass = require(`../modules/${file}`).default;
-            let module = new moduleClass(this.hbot);
+            let module = new moduleClass(this.xbot);
             if(module.enabled == true) {
-                this.hbot.modules.push(module);
+                this.xbot.modules.push(module);
                 console.log("done");
             } else
                 console.log("assets requirements not met, skipping...")
@@ -54,22 +54,22 @@ export default class ModuleManager {
         //TODO: add middleware (for guilds etc., - example configure prefix)
 
         // setup raw message processing.
-        this.hbot.dClient.on("message", (msg)  => {
+        this.xbot.dClient.on("message", (msg)  => {
 
             // look for commands in message
             if(msg.author.bot == true) return;
-            if(msg.content.startsWith(this.hbot.botConfig.defaultPrefix)) {
+            if(msg.content.startsWith(this.xbot.botConfig.defaultPrefix)) {
 
                 let args = msg.content.trim().slice(1).split(/ +/);
                 let commandName = args.shift();
                 // give message to all modules with function processCommand
-                for(let module of this.hbot.modules) {
+                for(let module of this.xbot.modules) {
                     if(module.commandName == commandName) {
                         module.processCommand(msg, args);
                     }
                 }
             } else {
-                for(let module of this.hbot.modules) {
+                for(let module of this.xbot.modules) {
                     module.processMessage(msg);
                 }
             }

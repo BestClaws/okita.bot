@@ -1,15 +1,15 @@
-import HBot from "./HBot";
+import XBot from "./XBot";
 import { Message } from "discord.js";
 
 
 export default class Module {
 
-    hbot: HBot;
+    xbot: XBot;
     commandName = "moduleName [gets overriden]";
     enabled = true;
 
-    constructor(hbot: HBot) {
-        this.hbot = hbot;
+    constructor(xbot: XBot) {
+        this.xbot = xbot;
     }
 
     // processInteraction() {

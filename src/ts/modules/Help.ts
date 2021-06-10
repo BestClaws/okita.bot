@@ -1,13 +1,13 @@
 import Discord from "discord.js";
-import HBot from "../core/HBot";
+import XBot from "../core/XBot";
 import Module from "../core/Module";
 
 export default class Help extends Module {
 
     commandName = "help";
 
-    constructor(hbot: HBot) {
-        super(hbot);
+    constructor(xbot: XBot) {
+        super(xbot);
     }
 
 

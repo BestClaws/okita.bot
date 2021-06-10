@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-import HBot from "../core/HBot";
+import XBot from "../core/XBot";
 import Module from "../core/Module";
 
 
@@ -7,8 +7,8 @@ export default class UserCommands extends Module {
 
     commandName = "cmd";
 
-    constructor(hbot: HBot) {
-        super(hbot);
+    constructor(xbot: XBot) {
+        super(xbot);
     }
 
     async processCommand(msg: Discord.Message, args: string[]) {
@@ -19,7 +19,7 @@ export default class UserCommands extends Module {
 
             case "add":
                 // check if command in the guild already exists.
-                let exists = await this.hbot.db.UserCommands.findOne({
+                let exists = await this.xbot.db.UserCommands.findOne({
                     where: {
                         command_name: args[1],
                         command_guild: msg.guild!.id
@@ -30,7 +30,7 @@ export default class UserCommands extends Module {
 
                 // add command, if not exists.
                 if(!exists)
-                await this.hbot.db.UserCommands.create({
+                await this.xbot.db.UserCommands.create({
                     user_id: msg.author.id,
                     command_name: args[1],
                     command_value: args.slice(2).join(" "),
@@ -45,7 +45,7 @@ export default class UserCommands extends Module {
 
             case "remove":
                 // remove command from the guild.
-                await this.hbot.db.UserCommands.destroy({
+                await this.xbot.db.UserCommands.destroy({
                     where: {
                         command_name: args[1],
                         command_guild: msg.guild!.id
@@ -58,7 +58,7 @@ export default class UserCommands extends Module {
 
             case "list": // list commands.
              
-                let records = await this.hbot.db.UserCommands.findAll({
+                let records = await this.xbot.db.UserCommands.findAll({
                     where:  {"command_guild": msg.guild!.id},
                     attributes: [
                         "command_name",
@@ -85,7 +85,7 @@ export default class UserCommands extends Module {
                 for(let author in commands) {
                     // needs improvement! some users may be uncached.
                     // TODO: if uncached, cache manually
-                    let author_name = await this.hbot.dClient.users.cache.get(author)!.username;
+                    let author_name = await this.xbot.dClient.users.cache.get(author)!.username;
                     embed.addField(author_name, commands[author].join(" "));
                 }
 
@@ -109,7 +109,7 @@ export default class UserCommands extends Module {
             // remove trailig "!"
             commandName = commandName.substr(0, commandName.length - 1);
             
-            let record = await this.hbot.db.UserCommands.findOne({
+            let record = await this.xbot.db.UserCommands.findOne({
                 where: {
                     command_name: commandName,
                     command_guild: msg.guild!.id
