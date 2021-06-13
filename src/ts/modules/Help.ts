@@ -1,13 +1,13 @@
 import Discord from "discord.js";
-import XBot from "../core/XBot";
+import SBot from "../core/SBot";
 import Module from "../core/Module";
 
 export default class Help extends Module {
 
     commandName = "help";
 
-    constructor(xbot: XBot) {
-        super(xbot);
+    constructor(sbot: SBot) {
+        super(sbot);
     }
 
 

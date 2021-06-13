@@ -6,7 +6,7 @@ import Fuse from 'fuse.js';
 
 import * as yaml from "../../util/yaml";
 
-import XBot from '../../core/XBot';
+import SBot from '../../core/SBot';
 import Module from "../../core/Module";
 import PuzzleBoard from './PuzzleBoard';
 
@@ -32,8 +32,8 @@ export default class Puzzle extends Module {
     puzzles: any;
 
     
-    constructor(xbot: XBot) {
-        super(xbot);
+    constructor(sbot: SBot) {
+        super(sbot);
 
         // check asset requirements.
         for(let asset of this.assetRequirements) {
@@ -111,7 +111,7 @@ export default class Puzzle extends Module {
 
             if(!this.points[msg.author.id]) {
                 // cache user points record if not cached.
-                let record = await this.xbot.db.Points.findOne({
+                let record = await this.sbot.db.Points.findOne({
                     where: {user_id: msg.author.id}
                 });
 
@@ -122,7 +122,7 @@ export default class Puzzle extends Module {
                 } else {  
                     // no record exists in db;
                     // create a new record and cache it.
-                    await this.xbot.db.Points.create({
+                    await this.sbot.db.Points.create({
                         user_id: msg.author.id,
                         points: 0
                     });
@@ -156,7 +156,7 @@ export default class Puzzle extends Module {
                 );
 
                 // update db
-                const affectedRows = await this.xbot.db.Points.update(
+                const affectedRows = await this.sbot.db.Points.update(
                     { points: updatedPoints },
                     { where: { user_id: msg.author.id }}
                 );

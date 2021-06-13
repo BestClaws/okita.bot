@@ -1,11 +1,11 @@
 import { Message, MessageEmbed } from "discord.js";
-import XBot from "../core/XBot";
+import SBot from "../core/SBot";
 import Module from "../core/Module";
 
 export default class Say extends Module {
 
-    constructor(xbot: XBot) {
-        super(xbot);
+    constructor(sbot: SBot) {
+        super(sbot);
         this.commandName = "say";
     }
 
@@ -17,7 +17,7 @@ export default class Say extends Module {
 
         if (subcmd == "-logs") {
             // fetch 5 log entries.
-            let logs = await this.xbot.db.Say.findAll({
+            let logs = await this.sbot.db.Say.findAll({
                 attributes: ["requested_by", "message"],
                 limit: 5,
                 order: [['createdAt', 'DESC']]
@@ -49,7 +49,7 @@ export default class Say extends Module {
 
 
     async recordLog(username: string, message: string) {
-        await this.xbot.db.Say.create({
+        await this.sbot.db.Say.create({
             requested_by: username,
             message: message,
         });

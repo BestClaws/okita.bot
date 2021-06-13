@@ -1,5 +1,5 @@
-# Xiangling
-Xiangling, the Discord bot.
+# oktia
+oktia, the Discord bot.
 
 ## current unique features:
 1. Anime Puzzle Game (guess character as it gets revealed incrementally.)

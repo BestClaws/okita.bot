@@ -1,13 +1,13 @@
 {
-  "name": "xiangling.bot",
+  "name": "oktia.bot",
   "version": "0.0.1",
-  "description": "Xiangling, the Discord Bot ",
+  "description": "oktia, the Discord Bot ",
   "main": "main.js",
   "scripts": {
     "update-db": "cd src && node js/db/db-init.js",
     "reset-db": "cd src && node js/db/db-init.js --force"
   },
-  "repository": "https://github.com/bobyclaws/xiangling.bot",
+  "repository": "https://github.com/bobyclaws/oktia.bot",
   "author": "Boby",
   "license": "MIT",
   "private": true,

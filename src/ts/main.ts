@@ -1,5 +1,5 @@
-import XBot from "./core/XBot";
+import SBot from "./core/SBot";
 
-let xbot = new XBot();
-xbot.configure('./config/bot-config.yml');
-xbot.start();
+let sbot = new SBot();
+sbot.configure('./config/bot-config.yml');
+sbot.start();
