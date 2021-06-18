@@ -2,6 +2,7 @@
 // TODO: create typings (for SBot, in this case)
 
 import fs from "fs";
+import { log } from "../util/logging";
 
 import SBot from "./SBot";
 
@@ -30,20 +31,20 @@ export default class ModuleManager {
         .map(dir => dir.name + "/" + "main" + ".js");
         
         moduleFiles = moduleFiles.concat(moreModuleFiles);
-        console.log("found modules: ", moduleFiles);
+        log("found modules: ", moduleFiles);
 
 
         for (const file of moduleFiles) {
-            console.log("loading module: " + file);
+            log("loading module: " + file);
             // modules are written in es6 ( with export default)
             // hence, access them via .default property when using require() 
             let moduleClass = require(`../modules/${file}`).default;
             let module = new moduleClass(this.sbot);
             if(module.enabled == true) {
                 this.sbot.modules.push(module);
-                console.log("done");
+                log("done");
             } else
-                console.log("assets requirements not met, skipping...")
+                log("assets requirements not met, skipping...")
         }
 
     }

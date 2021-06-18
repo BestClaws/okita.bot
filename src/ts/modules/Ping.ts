@@ -13,7 +13,7 @@ export default class Ping extends Module {
     processCommand(msg: Discord.Message) {
         // immediately record module entering time.
         let latency = Date.now() - msg.createdTimestamp;
-        console.log();
+        this.log("ping requested");
         msg.channel.send(`🏓 Pong! (${latency}ms)`);
     }
 

@@ -1,5 +1,6 @@
 import SBot from "./SBot";
 import { Message } from "discord.js";
+import {log} from "../util/logging";
 
 
 export default class Module {
@@ -25,9 +26,9 @@ export default class Module {
         // this.log("method processMessage() not implemented, skipping");
     }
 
-    // log(...msg: any[]) {
-    //     console.log(`[${this.constructor.name} module]`, ...msg);
-    // }
+    log(...msg: any[]) {
+        log(`[mod: ${this.constructor.name}]`, ...msg);
+    }
 
 }
 
