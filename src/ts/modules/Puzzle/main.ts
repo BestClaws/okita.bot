@@ -74,7 +74,7 @@ export default class Puzzle extends Module {
 
             // confirm a puzzle is running first.
             if(puzzleData == null) {
-                msg.channel.send("No puzzle started.\nType '.puzzle n' for a new puzzle.");
+                msg.channel.send("No puzzle started.\nType '*puzzle n' for a new puzzle.");
                 return;
             }
 
@@ -152,7 +152,7 @@ export default class Puzzle extends Module {
                 
                 msg.channel.send(
                     `you win!  +${pointsWon} points (total: ${this.points[msg.author.id]})\n` + 
-                    `type ".puzzle n" for new puzzle`
+                    `type "*puzzle n" for new puzzle`
                 );
 
                 // update db
@@ -169,7 +169,7 @@ export default class Puzzle extends Module {
             } else {
                 let reply = `wrong answer.
                     ${5 - puzzleData.trials} retries remaining.\n
-                    try ".puzzle r" to reveal more`;
+                    try "*puzzle r" to reveal more`;
                 msg.channel.send(reply);
             }
         }
