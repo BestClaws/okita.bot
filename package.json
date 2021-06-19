@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "canvas": "^2.8.0",
+    "cheerio": "^1.0.0-rc.10",
     "discord.js": "^12.5.3",
     "fuse.js": "^6.4.6",
     "node-fetch": "^2.6.1",
