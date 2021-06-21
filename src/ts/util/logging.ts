@@ -4,7 +4,7 @@ export function  log(...msg: any) {
         .split(/:| /);
     
 
-    console.log(`[${hour}:${minute}:${second}] `, ...msg);
+    console.log(`[${hour}:${minute}:${second}]`, ...msg);
     
     
 
