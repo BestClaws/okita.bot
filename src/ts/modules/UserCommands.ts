@@ -124,8 +124,8 @@ export default class UserCommands extends Module {
                     !record.command_value.startsWith("https://tenor.com") &&
                     !record.command_value.startsWith("https://imgur.com") &&
                     !record.command_value.startsWith("https://gyfcat.com") &&
-                    record.command_value.endsWith(".ogg") &&
-                    record.command_value.endsWith(".mp3") &&
+                    record.command_value.endsWith(".ogg") ||
+                    record.command_value.endsWith(".mp3") ||
                     record.command_value.endsWith(".wav")
                 )
                     msg.channel.send({
