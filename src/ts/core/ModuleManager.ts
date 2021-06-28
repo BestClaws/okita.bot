@@ -45,8 +45,10 @@ export default class ModuleManager {
             if(module.enabled == true) {
                 this.sbot.modules.push(module);
                 this.log("done");
-            } else
-                this.log("assets requirements not met, skipping...")
+            } else {
+                this.log("module is disabled (either requirements " + 
+                "did not meet or enforced intentionally)...");
+            }
         }
 
     }
@@ -150,7 +152,7 @@ export default class ModuleManager {
 
 
     log(...msg: any[]) {
-        log(`[mm]`, ...msg);
+        log(`[mod-man]`, ...msg);
     }
 }
 
