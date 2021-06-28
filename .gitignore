@@ -3,7 +3,7 @@
 /src/js/
 
 # bot secrets.
-bot-config.yml
+/src/config/
 
 # user generated. data.
 /database.sqlite
