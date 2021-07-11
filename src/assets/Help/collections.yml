@@ -1,0 +1,35 @@
+Games:
+  description: "Play some games."
+  commands:
+    puzzle:
+      description: "play an anime puzzle game"
+      variations:
+        - variant: "puzzle n"
+          description: "create a new puzzle" 
+        - variant: "puzzle r"
+          description: "reveal a new tile"
+        - variant: "puzzle <answer>"
+          description: "present an answer"
+NSFW:
+  description: "nsfw commands"
+  commands:
+    nhentai:
+      description: "nhentai utilities."
+      variations:
+        - variant: "nhentai <id>"
+          description: "view info about a certain <code>"       
+Utility:
+  description: "some utility commands."
+  commands:
+    ping:
+      description: "check if the bot is up and running."
+      variations:
+        - variant: "ping"
+          description: "view the bot's latency."
+    say:
+      description: "make the bot speak"
+      variations:
+        - variant: "say <text>"
+          description: "make the bot say something."
+        - variant: "say -logs"
+          description: "view last 5 records of who used the command"
