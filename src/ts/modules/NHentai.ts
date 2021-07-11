@@ -1,18 +1,18 @@
-import Discord from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
 import cheerio from "cheerio";
 import fetch from "node-fetch";
 
-export default class HInfo extends Module {
-    commandName = "h";
+export default class NHentai extends Module {
+    commandName = "nhentai";
 
     constructor(sbot: SBot) {
         super(sbot);
     }
 
 
-    async processCommand(msg: Discord.Message, args: string[]) {
+    async processCommand(msg: Message, args: string[]) {
         
         msg.channel.startTyping();
 
@@ -26,13 +26,12 @@ export default class HInfo extends Module {
             msg.channel.stopTyping();
             return;
         }
+
         let html_data = await response.text();
-
-
         let $ = cheerio.load(html_data);
         
         // extract info
-        let flat = $('#info').text().split('\t') 
+        let flat_txt = $('#info').text().split('\t') 
             .filter(x => x != '')
             .map(s => s.trim())
             .map(s => s.split(/\d{1,}[KM]?/)) // Altria Pendragon12kFujimaru
@@ -43,23 +42,23 @@ export default class HInfo extends Module {
         let section_header = "";
         let section_body = "";
 
-        let embed = new Discord.MessageEmbed;
+        let embed = new MessageEmbed;
         embed.setColor("#ed2553");
 
         // skip title (i = 0)
-        for(let i = 1; i < flat.length; i++) {
+        for(let i = 1; i < flat_txt.length; i++) {
             // ignore Groups and subsequent sections.
-            if(flat[i].endsWith("Groups:")) break;
+            if(flat_txt[i].endsWith("Groups:")) break;
 
-            if(flat[i].endsWith(":")) {
+            if(flat_txt[i].endsWith(":")) {
                 // preserve previous section and body
                 if(section_body != "" && section_header != "")
                     embed.addField(section_header, section_body);
                 // start a new section and reset body
-                section_header = flat[i];
+                section_header = flat_txt[i];
                 section_body = "";
             } else 
-                section_body += "" + this.PascalCase(flat[i]) + ", ";
+                section_body += "" + this.PascalCase(flat_txt[i]) + ", ";
         }
 
         msg.channel.send(embed);
