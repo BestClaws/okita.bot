@@ -31,7 +31,7 @@ export default class Clean extends Module {
         });
 
         let response = await msg.channel.send(":ok_hand:");
-        response.delete({timeout: 5});
+        setTimeout(() => response.delete(), 5000);
     }
 
    

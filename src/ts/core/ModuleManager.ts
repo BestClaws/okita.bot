@@ -59,7 +59,7 @@ export default class ModuleManager {
         //TODO: add middleware (for guilds etc., - example configure prefix)
 
         // setup raw message processing.
-        this.sbot.dClient.on("message", (msg)  => {
+        this.sbot.dClient.on("messageCreate", (msg)  => {
 
             // look for commands in message
             if(msg.author.bot == true) return;
@@ -95,6 +95,7 @@ export default class ModuleManager {
 
 
     }
+    
 
 
     processCommand(commandName: String, args: String[], channel: any): boolean {

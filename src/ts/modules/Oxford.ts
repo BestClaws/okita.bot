@@ -51,7 +51,7 @@ export default class Oxford extends Module {
         embed.setColor("#eca861");
         embed.addField("definition", base_definition);
         embed.addField("example", base_example);
-        msg.channel.send(embed);
+        msg.channel.send({embeds: [embed]});
 
        
     }

@@ -1,12 +1,52 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed, TextChannel } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
+import fetch from "node-fetch";
+import util from 'util';
 
 export default class Say extends Module {
 
     constructor(sbot: SBot) {
         super(sbot);
         this.commandName = "say";
+
+
+
+        this.sbot.dClient.on('interactionCreate', async interaction => {
+
+
+            if (!interaction.isCommand()) return;
+
+            
+        
+            if (interaction.commandName == this.commandName) {
+
+
+                let msg = interaction.options.getString('text') || "no string given";
+
+                interaction.channel?.send(msg);
+                this.recordLog(interaction.user.id, msg);
+         
+
+                let url = `https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`;
+                
+                let json = {
+                    "type": 1
+                }
+                fetch(url,{
+                    method: 'POST',
+                    body:    JSON.stringify(json),
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                .then(res => res.json())
+                .then(json => console.log(util.inspect(json.errors.type)));
+
+
+            }
+         
+        });
+
+
     }
 
 
@@ -32,13 +72,13 @@ export default class Say extends Module {
             let embed = new MessageEmbed();
             embed.setColor("#eca861");
             embed.setDescription(reply);            
-            msg.channel.send(embed);
+            msg.channel.send({embeds: [embed]});
             return;
 
         }
         
 
-        msg.delete({ timeout: 0 });
+        msg.delete();
         reply = args.join(" ");
         if(reply == "") return;
         msg.channel.send(reply);
@@ -46,6 +86,10 @@ export default class Say extends Module {
         
       
     }
+
+ 
+ 
+
 
 
     async recordLog(username: string, message: string) {

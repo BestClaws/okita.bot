@@ -21,7 +21,7 @@ export default class Albums extends Module {
         // only allow in shrine
         // if(msg.channel.id != "794137845182365716") return;
 
-        msg.delete({timeout: 0});
+        msg.delete();
         let saved_images: string[] = [];
 
         let latestCollector: ReactionCollector | null =  null;
@@ -30,7 +30,10 @@ export default class Albums extends Module {
 
         // fetch last 20 messages.
         let messages = await msg.channel.messages.fetch({limit: 20});
-        for(let message of messages.array()) {
+
+
+        
+        for(let message of Array.from(messages.values())) {
             // see if message contains image
             
             let image_url: string | undefined = undefined;
@@ -75,9 +78,9 @@ export default class Albums extends Module {
 
 
 
-            let collector = message.createReactionCollector((reaction, user) => {
-                return ["💾"].includes(reaction.emoji.name)
-            }, {time: 10000});
+            let collector = message.createReactionCollector({filter: (reaction) => {
+                return ["💾"].includes(reaction.emoji.name!)
+            }, time: 10000});
 
             
 
@@ -120,7 +123,7 @@ export default class Albums extends Module {
             embed.addField(
                     `saved ${saved_images.length} image${plural} to album: ${album_name}.`,
                     `[View Album](https://nami.liya.insomnia247.nl/albums/${requestor_id}/${album_name})`);
-            msg.channel.send(embed);
+            msg.channel.send({embeds: [embed]});
         });
 
 

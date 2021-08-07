@@ -90,7 +90,7 @@ export default class UserCommands extends Module {
                 }
 
                 embed.setColor("#eca861");
-                msg.channel.send(embed);
+                msg.channel.send({embeds: [embed]});
                 return;
               
 
