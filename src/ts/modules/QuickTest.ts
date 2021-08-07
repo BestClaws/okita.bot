@@ -6,7 +6,7 @@ import { channel } from "diagnostic_channel";
 export default class QuickTest extends Module {
     
     commandName = "test";
-    // enabled = false;
+    enabled = false;
     assetRequirements = [
         
     ]

@@ -2,11 +2,13 @@ import { ApplicationCommand, Message, MessageEmbed } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
 
-export default class SlashDep extends Module {
+export default class SlashDeploy extends Module {
+
+    enabled = false;
 
     constructor(sbot: SBot) {
         super(sbot);
-        this.commandName = "slashdep";
+        this.commandName = "sd";
     }
 
 

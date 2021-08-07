@@ -14,7 +14,7 @@ export default class Nqn extends Module {
         this.sbot.dClient.fetchWebhook('861346155106402324')
         .then((wh) => {
             this.channel = wh.channelId;
-            this.log("current webhook channel id:", this.channel)
+            // this.log("current webhook channel id:", this.channel)
             this.webhook = wh;
         });
     }
@@ -85,7 +85,7 @@ export default class Nqn extends Module {
 
 
         this.webhook.sendSlackMessage({
-            'username': msg.author.username,
+            'username': (await msg.guild.members.fetch(msg.author.id)).nickname ||  msg.author.username,
             'text': response
         }).catch(console.error);
 
