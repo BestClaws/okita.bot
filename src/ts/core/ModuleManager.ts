@@ -1,7 +1,6 @@
 // TODO: command processor would be good?
 // TODO: create typings (for SBot, in this case)
 
-import { DMChannel, TextChannel } from "discord.js";
 import fs from "fs";
 import { log } from "../util/logging";
 
@@ -93,6 +92,19 @@ export default class ModuleManager {
 
         });
 
+
+
+        this.sbot.dClient.on('interactionCreate', async interaction => {
+            if (!interaction.isCommand()) return;
+
+            for(let module of this.sbot.modules) {
+                if(module.commandName == interaction.commandName) {
+                    module.processInteraction(interaction);
+                }
+            }
+ 
+         
+        });
 
     }
     

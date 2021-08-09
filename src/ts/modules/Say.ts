@@ -1,8 +1,6 @@
-import { Message, MessageEmbed, TextChannel } from "discord.js";
+import { CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
-import fetch from "node-fetch";
-import util from 'util';
 
 export default class Say extends Module {
 
@@ -12,43 +10,23 @@ export default class Say extends Module {
 
 
 
-        this.sbot.dClient.on('interactionCreate', async interaction => {
-
-
-            if (!interaction.isCommand()) return;
-
-            
-        
-            if (interaction.commandName == this.commandName) {
-
-
-                let msg = interaction.options.getString('text') || "no string given";
-
-                interaction.channel?.send(msg);
-                this.recordLog(interaction.user.id, msg);
-         
-
-                let url = `https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`;
-                
-                let json = {
-                    "type": 1
-                }
-                fetch(url,{
-                    method: 'POST',
-                    body:    JSON.stringify(json),
-                    headers: { 'Content-Type': 'application/json' },
-                })
-                .then(res => res.json())
-                .then(json => console.log(util.inspect(json.errors.type)));
-
-
-            }
-         
-        });
-
 
     }
 
+
+    processInteraction(interaction: CommandInteraction) {
+        let msg = interaction.options.getString('text') || "-";
+        interaction.channel?.send(msg);
+        // i wanted to ignore the interaction. but discord won't allow me to
+        // so i reply to an interaction and then delete it immediately
+        // kinda spoils the purpose of having a slash command then.
+        this.recordLog(interaction.user.id, msg);
+        interaction.reply({
+            "content": "none"
+        });
+        interaction.deleteReply();
+        this.recordLog(interaction.user.id, msg);
+    }
 
     async processCommand(msg: Message, args: string[]) {
 
@@ -86,10 +64,6 @@ export default class Say extends Module {
         
       
     }
-
- 
- 
-
 
 
     async recordLog(username: string, message: string) {
