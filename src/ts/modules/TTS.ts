@@ -11,9 +11,11 @@ const ttsClient = new textToSpeech.TextToSpeechClient();
 
 export default class TTS extends Module {
     commandName = "tts";
-    enabled = false;
+    meta = {
+        status: "unloaded"
+    }
     quota = 0;
-    // enabled = false;
+
 
     constructor(sbot: SBot) {
         super(sbot);

@@ -38,7 +38,7 @@ export default class Puzzle extends Module {
         // check asset requirements.
         for(let asset of this.assetRequirements) {
             if(!fs.existsSync(asset)) {
-                this.enabled = false
+                this.meta.status = "unloaded"
                 return;
             } 
         }

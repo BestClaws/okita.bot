@@ -6,10 +6,10 @@ import { channel } from "diagnostic_channel";
 export default class QuickTest extends Module {
     
     commandName = "test";
-    enabled = false;
-    assetRequirements = [
-        
-    ]
+    assetRequirements = []
+    meta = {
+        status: "unloaded"
+    };
     
     constructor(sbot: SBot) {
         super(sbot);

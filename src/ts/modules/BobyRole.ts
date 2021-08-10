@@ -4,7 +4,7 @@ import Module from "../core/Module";
 
 export default class BobyRole extends Module {
     commandName = "role";
-    enabled = true;
+
 
     constructor(sbot: SBot) {
         super(sbot);

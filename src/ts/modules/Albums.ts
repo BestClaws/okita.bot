@@ -5,7 +5,6 @@ import SBot from "../core/SBot";
 export default class Albums extends Module {
 
     commandName = "isave";
-    enabled = true;
     state: any;
 
 

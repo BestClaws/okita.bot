@@ -19,7 +19,7 @@ export default class Help extends Module {
         // check asset requirements.
         for(let asset of this.assetRequirements) {
             if(!fs.existsSync(asset)) {
-                this.enabled = false
+                this.meta["status"] = "enabled";
                 return;
             } 
         }

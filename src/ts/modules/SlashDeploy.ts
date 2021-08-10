@@ -4,11 +4,14 @@ import Module from "../core/Module";
 
 export default class SlashDeploy extends Module {
 
-    enabled = false;
+    meta = {
+        status: "disabled"
+    };
+
+    commandName = "sd"
 
     constructor(sbot: SBot) {
         super(sbot);
-        this.commandName = "sd";
     }
 
 
