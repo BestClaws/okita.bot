@@ -7,7 +7,9 @@ export default class Module {
 
     sbot: SBot;
     commandName = "moduleName [gets overriden]";
-    enabled = true;
+    meta = {
+        status: "enabled"
+    }
 
     constructor(sbot: SBot) {
         this.sbot = sbot;

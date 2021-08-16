@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
 
@@ -13,29 +13,27 @@ export default class Clean extends Module {
 
     }
 
+
     async processCommand(msg: Message, args: string[]) {
-        //let limit = Number.parseInt(args[0]);
-        let limit = 10;
-        let messages = await (await msg.channel.messages.fetch({limit: 100}))
-            .filter((m,_k,_c) => m.author.id == msg.guild!.me!.id); // careful
+    // this command delete okita messages from last x messages
+    // NOT delete x okita messages. (maybe prefer temporal recency?)
 
-        messages.forEach((message, _k,_m) => {
-            // u could do this parallelly.
+        let limit = Number.parseInt(args[0]) || 10; // default limit: 10
 
-            if(limit > 0) {
-                this.log('deleting message from ', message.author.username);
-                message.delete();
-                this.log("limit: ", limit);
-            }
-            limit--;
-        });
+
+        let channel = msg.channel as TextChannel;
+
+        let messages = (await msg.channel.messages.fetch({limit}))
+            .filter(m => m.author.id == msg.guild?.me?.id);
+
+        channel.bulkDelete(messages);
+
+        // TODO: do better logging
+        this.log('deleting a bulk of messages');
 
         let response = await msg.channel.send(":ok_hand:");
-        response.delete({timeout: 5});
+        setTimeout(() => response.delete(), 5000);
     }
-
-   
-    
 
 
 }

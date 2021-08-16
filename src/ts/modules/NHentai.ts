@@ -14,7 +14,7 @@ export default class NHentai extends Module {
 
     async processCommand(msg: Message, args: string[]) {
         
-        msg.channel.startTyping();
+        msg.channel.sendTyping();
 
         let code = args[0];
         let url = `https://nhentai.net/g/${code}`;
@@ -23,7 +23,6 @@ export default class NHentai extends Module {
 
         if(response.status != 200) {
             msg.channel.send("Invalid Code.");
-            msg.channel.stopTyping();
             return;
         }
 
@@ -61,8 +60,7 @@ export default class NHentai extends Module {
                 section_body += "" + this.PascalCase(flat_txt[i]) + ", ";
         }
 
-        msg.channel.send(embed);
-        msg.channel.stopTyping();
+        msg.channel.send({embeds: [embed]});
 
     }
 

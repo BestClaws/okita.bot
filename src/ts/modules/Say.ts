@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
 
@@ -7,8 +7,26 @@ export default class Say extends Module {
     constructor(sbot: SBot) {
         super(sbot);
         this.commandName = "say";
+
+
+
+
     }
 
+
+    processInteraction(interaction: CommandInteraction) {
+        let msg = interaction.options.getString('text') || "-";
+        interaction.channel?.send(msg);
+        // i wanted to ignore the interaction. but discord won't allow me to
+        // so i reply to an interaction and then delete it immediately
+        // kinda spoils the purpose of having a slash command then.
+        this.recordLog(interaction.user.id, msg);
+        interaction.reply({
+            "content": "none"
+        });
+        interaction.deleteReply();
+        this.recordLog(interaction.user.id, msg);
+    }
 
     async processCommand(msg: Message, args: string[]) {
 
@@ -32,13 +50,13 @@ export default class Say extends Module {
             let embed = new MessageEmbed();
             embed.setColor("#eca861");
             embed.setDescription(reply);            
-            msg.channel.send(embed);
+            msg.channel.send({embeds: [embed]});
             return;
 
         }
         
 
-        msg.delete({ timeout: 0 });
+        msg.delete();
         reply = args.join(" ");
         if(reply == "") return;
         msg.channel.send(reply);

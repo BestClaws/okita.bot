@@ -38,7 +38,7 @@ export default class Puzzle extends Module {
         // check asset requirements.
         for(let asset of this.assetRequirements) {
             if(!fs.existsSync(asset)) {
-                this.enabled = false
+                this.meta.status = "unloaded"
                 return;
             } 
         }
@@ -79,10 +79,10 @@ export default class Puzzle extends Module {
             }
 
             if(puzzleData.trials >= 5) {
-                msg.channel.send(
-                    `game over! you lose.\nThe answer was: ${puzzleData.character}`,
-                    { files: [puzzleData.background.src] }
-                );
+                msg.channel.send({
+                    content: `game over! you lose.\nThe answer was: ${puzzleData.character}`,
+                    files: [puzzleData.background.src]
+                });
                 puzzleData = null;
         
             } else {
@@ -98,7 +98,7 @@ export default class Puzzle extends Module {
                 );
                 
                 msg.channel.send(`${5 - puzzleData.trials} retries remain.`);
-                msg.channel.send(attachment);
+                msg.channel.send({files:[attachment]});
                
             }
 
@@ -226,7 +226,7 @@ export default class Puzzle extends Module {
         board.draw();
 
         const attachment = new Discord.MessageAttachment(this.canvas.toBuffer(), 'puzzle-image.png');
-        await msg.channel.send(attachment);
+        await msg.channel.send({files: [attachment]});
         msg.channel.send(`${5 - puzzleData.trials} retries remain.`);
 
     }

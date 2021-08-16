@@ -19,7 +19,7 @@ export default class Help extends Module {
         // check asset requirements.
         for(let asset of this.assetRequirements) {
             if(!fs.existsSync(asset)) {
-                this.enabled = false
+                this.meta["status"] = "enabled";
                 return;
             } 
         }
@@ -70,7 +70,7 @@ export default class Help extends Module {
                 `${prefix}help [command] for more Info • Ex: ${prefix}help puzzle`
             )
             
-            msg.channel.send(embed);
+            msg.channel.send({embeds: [embed]});
             return;
 
         } else if (args.length == 1) {
@@ -96,7 +96,7 @@ export default class Help extends Module {
                 }
 
                 embed.setDescription(description);
-                msg.channel.send(embed);
+                msg.channel.send({embeds: [embed]});
 
             } else msg.channel.send("That command does not exist.");
 
