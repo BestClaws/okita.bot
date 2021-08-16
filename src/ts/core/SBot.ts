@@ -8,7 +8,11 @@ export default class SBot {
     
     botConfig: any = {};
     db = dbObjects;
-    dClient: Client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+    dClient: Client = new Client({intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS
+    ]});
     modules: any = [];
     services: any = [];
     moduleManager: ModuleManager = new ModuleManager(this);
