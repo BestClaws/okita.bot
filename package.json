@@ -15,7 +15,7 @@
     "@google-cloud/text-to-speech": "^3.2.6",
     "canvas": "^2.8.0",
     "cheerio": "^1.0.0-rc.10",
-    "discord.js": "^13.0.0-dev.t1627906063.6e0ea02",
+    "discord.js": "^13.0.0",
     "fuse.js": "^6.4.6",
     "node-fetch": "^2.6.1",
     "pm2": "^4.5.6",
