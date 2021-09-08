@@ -78,7 +78,7 @@ export default class Nqn extends Module {
     async createWebhook(channel: TextChannel): Promise<Webhook> {
         let webhook = await channel.createWebhook("NQN - " + channel.name, {
         })
-        this.log(`Created webhook:  ${webhook}`);
+        this.log(`Created webhook:  ${webhook.name} [${webhook.id}]`);
         return webhook;
     }
 
@@ -86,25 +86,27 @@ export default class Nqn extends Module {
         this.log("fetching webhooks for channel: ", channel.name);
         let webhooks = await channel.fetchWebhooks();
 
-        let webhook: Webhook | undefined = undefined;
+        let webhook: Webhook | null = null;
 
         webhooks.forEach(wh => {
 
             if(wh.name.startsWith("NQN")) {
                 this.log("found a nqn webhook");
                 webhook = wh;
+                this.log(`fetched webhook: ${webhook.name} [${webhook.id}]`);
             }
         });
 
 
-        if(webhook == undefined) {
+        
+        if(webhook == null) {
             this.log("no nqn webhooks found");
             this.log("creating a nqn webhook");
             webhook = await this.createWebhook(channel);
         
-        } else {
-            this.log("fetched webhook: ", webhook);
         }
+        
+      
         return webhook;
     }
 
