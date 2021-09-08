@@ -1,4 +1,4 @@
-import { GuildEmoji, Message, TextChannel, Webhook } from "discord.js";
+import { Channel, GuildEmoji, Message, TextChannel, Webhook } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
 
@@ -6,34 +6,28 @@ export default class Nqn extends Module {
 
     commandName = "nqn";
 
-    channel: string = "794137845182365716";
-    webhook!: Webhook; // sus (definite assignment)
+    // TODO: consider caching webhooks list.
 
     constructor(sbot: SBot) {
         super(sbot);
-        this.sbot.dClient.fetchWebhook('861346155106402324')
-        .then((wh) => {
-            this.channel = wh.channelId;
-            // this.log("current webhook channel id:", this.channel)
-            this.webhook = wh;
-        });
+
+
     }
 
 
     async processCommand(msg: Message, args: string[]) {
 
-        // weebs-server only feature.
-        if(msg.guild?.id != "744209392056139938") return;
-
+      
 
 
     }
 
 
     async processMessage(msg: Message) {
+
+
+
   
-        // weebs server only feature.
-        if(msg.guild?.id != "744209392056139938") return;
         // dont support larger messages
         if(msg.content.length > 100) return;
 
@@ -44,7 +38,7 @@ export default class Nqn extends Module {
 
         let response = msg.content.split(" ").map(token => {
             if(token.startsWith(":") && token.endsWith(":")) {
-                let emote = this.findEmote(token.slice(1, token.length -1));
+                let emote = this.findEmote(token.slice(1, token.length -1), msg.channel as TextChannel);
                 
                 if(emote)
                     return emote.animated ? 
@@ -62,30 +56,17 @@ export default class Nqn extends Module {
 
         msg.delete();
 
-        // TODO: each channel should have its own webhook to reduce audit-log spam.
 
-        if(this.channel != msg.channel.id) {
+        // fetch this channel's webhook. if not present create it.
+        let webhook = await this.fetchOrCreateWebhook(msg.channel as TextChannel);
 
-            this.channel = msg.channel.id;
-
-            // slow... `edit` resolves the `avatar` value into an base64 encoded image
-            await this.webhook.edit({
-                avatar: msg.author.avatarURL() as string,
-                channel: msg.channel.id
-                
-            });
-
-        } else {
-            await this.webhook.edit({
-                avatar: msg.author.avatarURL() as string,
-            });
-        }
-
-        
+        await webhook.edit({
+            avatar: msg.author.avatarURL() as string,
+        });
 
 
-        this.webhook.sendSlackMessage({
-            'username': (await msg.guild.members.fetch(msg.author.id)).nickname ||  msg.author.username,
+        webhook.sendSlackMessage({
+            'username': (await msg.guild!.members.fetch(msg.author.id)).nickname ||  msg.author.username,
             'text': response
         }).catch(console.error);
 
@@ -95,22 +76,60 @@ export default class Nqn extends Module {
     }
 
     async createWebhook(channel: TextChannel): Promise<Webhook> {
-        let webhook = await channel.createWebhook('New Web Hook', {
+        let webhook = await channel.createWebhook("NQN - " + channel.name, {
         })
-        this.log(`Created webhook ${webhook}`);
+        this.log(`Created webhook:  ${webhook}`);
+        return webhook;
+    }
+
+    async fetchOrCreateWebhook(channel: TextChannel): Promise<Webhook> {
+        this.log("fetching webhooks for channel: ", channel.name);
+        let webhooks = await channel.fetchWebhooks();
+
+        let webhook: Webhook | undefined = undefined;
+
+        webhooks.forEach(wh => {
+
+            if(wh.name.startsWith("NQN")) {
+                this.log("found a nqn webhook");
+                webhook = wh;
+            }
+        });
+
+
+        if(webhook == undefined) {
+            this.log("no nqn webhooks found");
+            this.log("creating a nqn webhook");
+            webhook = await this.createWebhook(channel);
+        
+        } else {
+            this.log("fetched webhook: ", webhook);
+        }
         return webhook;
     }
 
 
-    findEmote(query: string): GuildEmoji | undefined {
+    findEmote(query: string, channel: TextChannel): GuildEmoji | undefined {
         // TODO: consider if discord.js cache is fast enough
         // (whether searching through a collection of GuildEmoji is as fast as searching
         // through a hashset of strings)
-        let results = this.sbot.dClient.emojis.cache.filter((emote, _k, _c) => 
+        
+        // first search local server emotes.
+        let results = channel.guild.emojis.cache.filter((emote) => 
             query == emote.name
         );
+
+        if(results.size > 0)
+            return results.first();
+        
+        // search globally.
+        results = this.sbot.dClient.emojis.cache.filter((emote) => 
+            query == emote.name
+        );
+
         if(results.size > 0)
             return  results.first();
+
         else
             return undefined;
     }
