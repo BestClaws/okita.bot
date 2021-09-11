@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, TextChannel, Webhook } from "discord.js";
+import { CommandInteraction, Message, MessageEmbed, TextChannel, Webhook } from "discord.js";
 import SBot from "../core/SBot";
 import Module from "../core/Module";
 
@@ -14,6 +14,16 @@ export default class Say extends Module {
     }
 
 
+    async processInteraction(interaction: CommandInteraction) {
+        let message = interaction.options.getString('text') || "-";
+        let target = interaction.options.getString('lang') || 'en';
+        let result = await this.translateText(message, target as string);
+
+        interaction.reply({
+            "content": result,
+            "ephemeral": true
+        });
+    }
 
 
     async processCommand(msg: Message, args: string[]) {
@@ -26,15 +36,13 @@ export default class Say extends Module {
         }
 
         let message = args.join(" ");
-        let result = await this.translateText(message, target as string);
+        let result: string = await this.translateText(message, target as string);
+       
+        // i don't know why this space get's added.
+        result.replace("<@! ", "<@!");
+        
         this.log("tranlsated text:", result);
 
-
-        // let embed = new MessageEmbed();
-        // embed.setDescription(result);
-        // embed.setAuthor(msg.author.username, msg.author.avatarURL() as string);
-        // embed.setColor("#eca861");
-        // msg.channel.send({embeds: [embed]});
 
 
         msg.delete();
