@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@google-cloud/text-to-speech": "^3.2.6",
+    "@google-cloud/translate": "^6.2.7",
     "canvas": "^2.8.0",
     "cheerio": "^1.0.0-rc.10",
     "discord.js": "^13.0.0",
