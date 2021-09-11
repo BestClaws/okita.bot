@@ -39,7 +39,7 @@ export default class Say extends Module {
         let result: string = await this.translateText(message, target as string);
        
         // i don't know why this space get's added.
-        result.replace("<@! ", "<@!");
+        result = result.replace("<@! ", "<@!");
         
         this.log("tranlsated text:", result);
 
